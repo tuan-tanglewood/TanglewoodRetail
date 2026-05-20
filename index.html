@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Camp Tanglewood — Retail Operations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --cream:#F5F0E8;--rust:#8B4A2F;--sage:#5C7A5C;--gold:#C4933F;
+  --blush:#E8D5C4;--ink:#1A1208;--muted:#7A6A58;
+  --max:600px;
+}
+html{background:var(--cream)}
+body{font-family:'Courier Prime',monospace;background:var(--cream);color:var(--ink);min-height:100vh;padding:0;margin:0}
+
+/* Layout */
+.wrap{max-width:var(--max);margin:0 auto;padding:2rem 1.25rem 4rem}
+
+/* Screens */
+.screen{display:none;animation:fadeIn 0.2s ease}
+.screen.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* Masthead */
+.masthead{text-align:center;border-top:2px solid var(--rust);border-bottom:2px solid var(--rust);padding:1.1rem 0;margin-bottom:2rem}
+.eyebrow{font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--rust);margin-bottom:7px}
+.masthead h1{font-family:'Playfair Display',serif;font-size:clamp(22px,5vw,28px);font-weight:400;color:var(--ink);line-height:1.25}
+.masthead .sub{font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:0.06em}
+
+/* Section label */
+.section-label{font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--rust);margin-bottom:10px}
+
+/* Divider */
+.divider{font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--rust);margin:1.5rem 0;display:flex;align-items:center;gap:10px}
+.divider::before,.divider::after{content:'';flex:1;height:0.5px;background:var(--rust);opacity:0.35}
+
+/* Nav tabs — home */
+.nav-tabs{display:flex;flex-direction:column;gap:10px;margin-bottom:1.5rem}
+.nav-tab{background:var(--blush);border:0.5px solid var(--rust);border-radius:2px;padding:1rem 1.25rem;cursor:pointer;transition:background 0.15s;display:flex;align-items:center;justify-content:space-between}
+.nav-tab:hover,.nav-tab:active{background:#DFC8B4}
+.nav-tab-left{display:flex;align-items:center;gap:14px}
+.nav-tab-num{font-family:'Playfair Display',serif;font-size:18px;color:var(--rust);min-width:26px}
+.nav-tab-title{font-family:'Playfair Display',serif;font-size:15px;color:var(--ink);line-height:1.3}
+.nav-tab-arrow{font-size:14px;color:var(--muted)}
+.nav-tab.gold-tab{border-color:var(--gold)}
+.nav-tab.gold-tab .nav-tab-num{color:var(--gold)}
+
+/* Resource cards */
+.resource-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1.5rem}
+@media(max-width:360px){.resource-grid{grid-template-columns:1fr}}
+.resource-card{background:transparent;border:0.5px solid var(--sage);border-radius:2px;padding:.9rem .75rem;cursor:pointer;text-align:center;transition:background 0.15s}
+.resource-card:hover,.resource-card:active{background:#E8F0E8}
+.resource-card .r-icon{font-size:20px;color:var(--sage);margin-bottom:5px}
+.resource-card .r-title{font-family:'Playfair Display',serif;font-size:12px;color:var(--ink);line-height:1.3}
+
+/* Buttons */
+.btn-primary{display:block;width:100%;background:var(--rust);color:var(--cream);border:none;border-radius:2px;padding:13px;font-family:'Courier Prime',monospace;font-size:13px;letter-spacing:0.12em;cursor:pointer;text-align:center;text-transform:uppercase;transition:background 0.15s}
+.btn-primary:hover,.btn-primary:active{background:#7A3F28}
+.btn-ghost{background:transparent;border:0.5px solid var(--rust);color:var(--rust);border-radius:2px;padding:9px 16px;font-family:'Courier Prime',monospace;font-size:12px;letter-spacing:0.08em;cursor:pointer;text-transform:uppercase;transition:background 0.15s;white-space:nowrap}
+.btn-ghost:hover,.btn-ghost:active{background:var(--blush)}
+
+/* Lesson */
+.lesson-section{margin-bottom:1.25rem}
+.lesson-label{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--sage);margin-bottom:5px}
+.lesson-text{font-size:13px;color:var(--ink);line-height:1.8;border-left:2px solid var(--gold);padding-left:12px}
+
+/* Step cards */
+.step-card{background:var(--blush);border:0.5px solid var(--rust);border-radius:2px;padding:.9rem 1.1rem;margin-bottom:9px;display:flex;gap:14px;align-items:flex-start}
+.step-num{font-family:'Playfair Display',serif;font-size:22px;color:var(--rust);min-width:26px;line-height:1}
+.step-title{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--sage);margin-bottom:4px}
+.step-text{font-size:13px;color:var(--ink);line-height:1.7}
+.step-warn{font-size:12px;color:var(--rust);margin-top:5px;font-style:italic}
+
+/* Checklist */
+.checklist-item{display:flex;gap:9px;align-items:flex-start;padding:8px 0;border-bottom:0.5px solid #C8BC9F;font-size:13px;color:var(--ink);line-height:1.55}
+.checklist-item:last-child{border-bottom:none}
+.check-dot{width:6px;height:6px;border-radius:50%;background:var(--sage);flex-shrink:0;margin-top:5px}
+.sub-section-label{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--sage);margin:12px 0 6px}
+
+/* Gentle note */
+.gentle-note{text-align:center;font-family:'Playfair Display',serif;font-size:14px;font-style:italic;color:var(--rust);border-top:0.5px solid #C8BC9F;border-bottom:0.5px solid #C8BC9F;padding:10px 0;margin:0 0 1.25rem}
+
+/* Example box */
+.example-box{border:1px solid var(--gold);border-radius:2px;padding:1rem 1.1rem;margin:1rem 0;background:#FDF8EF}
+.ex-label{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.example-step{font-size:13px;color:var(--ink);padding:3px 0;line-height:1.6}
+.example-step span{color:var(--rust);font-style:italic}
+
+/* Sim */
+.interactive-sim{border:0.5px solid var(--rust);border-radius:2px;padding:.9rem 1.1rem;margin:1rem 0;background:#FDF8EF}
+.sim-label{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--rust);margin-bottom:10px}
+.sim-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.sim-row label{font-size:12px;color:var(--ink);min-width:120px}
+.sim-input{border:0.5px solid #B8A898;border-radius:2px;padding:6px 8px;font-family:'Courier Prime',monospace;font-size:13px;background:var(--cream);color:var(--ink);width:100px}
+.sim-result{font-family:'Courier Prime',monospace;font-size:13px;margin-top:8px;padding:10px;background:var(--blush);border-radius:2px;min-height:40px;color:var(--rust);line-height:1.6}
+
+/* Quiz */
+.progress-track{background:#D9D0C0;height:3px;margin-bottom:1.75rem;border-radius:99px}
+.progress-fill{height:3px;border-radius:99px;background:var(--rust);transition:width 0.4s}
+.q-label{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--rust);margin-bottom:10px}
+.q-text{font-family:'Playfair Display',serif;font-size:clamp(15px,4vw,18px);color:var(--ink);line-height:1.5;margin-bottom:1.25rem}
+.opt{display:block;width:100%;text-align:left;background:transparent;border:0.5px solid #B8A898;border-radius:2px;padding:11px 14px;margin-bottom:9px;cursor:pointer;font-family:'Courier Prime',monospace;font-size:13px;color:var(--ink);letter-spacing:0.02em;transition:border-color 0.15s,background 0.15s}
+.opt:hover:not(:disabled){border-color:var(--rust);background:var(--blush)}
+.opt.correct{background:#D4E8D4;border-color:var(--sage);color:#2A4A2A}
+.opt.wrong{background:#F0DDD8;border-color:var(--rust);color:#5A2010}
+.opt.reveal{background:#D4E8D4;border-color:var(--sage);color:#2A4A2A;opacity:0.6}
+.feedback-box{border-radius:2px;padding:10px 13px;margin:10px 0;font-size:13px;line-height:1.65;display:none}
+.feedback-box.show{display:block}
+.feedback-box.correct{background:#D4E8D4;border-left:3px solid var(--sage);color:#2A4A2A}
+.feedback-box.wrong{background:#F0DDD8;border-left:3px solid var(--rust);color:#5A2010}
+
+/* Nav row */
+.nav-row{display:flex;gap:8px;align-items:center;margin-top:1.25rem}
+
+/* Results */
+.score-frame{border:2px solid var(--rust);border-radius:2px;padding:1.75rem;text-align:center;margin-bottom:1.5rem;background:var(--blush)}
+.score-pct{font-family:'Playfair Display',serif;font-size:clamp(44px,12vw,56px);color:var(--rust);line-height:1}
+.score-counts{font-size:13px;color:var(--ink);margin:6px 0 4px}
+.score-sub{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--sage);margin-top:4px}
+.review-item{border-bottom:0.5px solid #C8BC9F;padding:12px 0}
+.review-item:last-child{border-bottom:none}
+.review-q{font-family:'Playfair Display',serif;font-size:13px;color:var(--ink);margin-bottom:4px}
+.review-a{font-size:12px;color:var(--rust);line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HOME -->
+<div id="home" class="screen active">
+  <div class="masthead">
+    <div class="eyebrow">Staff Handbook</div>
+    <h1>Camp Tanglewood<br>Retail Operations</h1>
+    <div class="sub">Lodge Camp Store &amp; Lakeside Snack Shop</div>
+  </div>
+
+  <div class="section-label">Policies &amp; Procedures</div>
+  <div class="nav-tabs">
+    <div class="nav-tab" onclick="goLesson(0)">
+      <div class="nav-tab-left"><div class="nav-tab-num">1</div><div class="nav-tab-title">Service Philosophy</div></div>
+      <div class="nav-tab-arrow">›</div>
+    </div>
+    <div class="nav-tab" onclick="goLesson(1)">
+      <div class="nav-tab-left"><div class="nav-tab-num">2</div><div class="nav-tab-title">Cash Handling</div></div>
+      <div class="nav-tab-arrow">›</div>
+    </div>
+    <div class="nav-tab" onclick="goLesson(2)">
+      <div class="nav-tab-left"><div class="nav-tab-num">3</div><div class="nav-tab-title">Opening &amp; Closing</div></div>
+      <div class="nav-tab-arrow">›</div>
+    </div>
+    <div class="nav-tab" onclick="goLesson(3)">
+      <div class="nav-tab-left"><div class="nav-tab-num">4</div><div class="nav-tab-title">Square POS</div></div>
+      <div class="nav-tab-arrow">›</div>
+    </div>
+    <div class="nav-tab" onclick="goLesson(4)">
+      <div class="nav-tab-left"><div class="nav-tab-num">5</div><div class="nav-tab-title">Security &amp; Loss Prevention</div></div>
+      <div class="nav-tab-arrow">›</div>
+    </div>
+    <div class="nav-tab gold-tab" onclick="goLesson(5)">
+      <div class="nav-tab-left"><div class="nav-tab-num">6</div><div class="nav-tab-title">Drawer Count-Down</div></div>
+      <div class="nav-tab-arrow" style="color:var(--gold)">›</div>
+    </div>
+  </div>
+
+  <div class="divider">view resources</div>
+  <div class="resource-grid">
+    <div class="resource-card" onclick="goResource('open')">
+      <div class="r-icon">↑</div>
+      <div class="r-title">Opening Checklist</div>
+    </div>
+    <div class="resource-card" onclick="goResource('close')">
+      <div class="r-icon">↓</div>
+      <div class="r-title">Closing Checklist</div>
+    </div>
+    <div class="resource-card" onclick="goResource('countdown')">
+      <div class="r-icon">#</div>
+      <div class="r-title">Count-Down Reference</div>
+    </div>
+  </div>
+
+  <div class="divider">take the quiz</div>
+  <button class="btn-primary" onclick="startQuiz()">Begin the quiz →</button>
+</div>
+
+<!-- LESSON -->
+<div id="lesson" class="screen">
+  <div id="lesson-content"></div>
+  <div class="nav-row">
+    <button class="btn-ghost" onclick="show('home')">← Back</button>
+    <button class="btn-primary" style="flex:1;margin-left:8px" onclick="startQuiz()">Take the quiz →</button>
+  </div>
+</div>
+
+<!-- RESOURCE -->
+<div id="resource" class="screen">
+  <div id="resource-content"></div>
+  <div class="nav-row" style="margin-top:1.5rem">
+    <button class="btn-ghost" onclick="show('home')">← Back</button>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="screen">
+  <div class="progress-track"><div class="progress-fill" id="progress"></div></div>
+  <div id="quiz-content"></div>
+</div>
+
+<!-- RESULTS -->
+<div id="results" class="screen">
+  <div id="results-content"></div>
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+function cl(items){
+  return items.map(i=>`<div class="checklist-item"><div class="check-dot"></div><span>${i}</span></div>`).join('');
+}
+
+const lessons=[
+  {title:"Service Philosophy",num:"1",sections:[
+    {label:"Our standard",text:"Every guest interaction should reflect hospitality, kindness, and servant-hearted spirit. Guests should feel welcomed, cared for, and respected through friendly, helpful, positive, and professional service."},
+    {label:"Greeting guests",text:"Use warm, simple greetings — \"Hey guys, welcome in!\" or \"What can I help you find?\" Greet guests promptly, maintain eye contact, and speak with patience and courtesy."},
+    {label:"During checkout",text:"Repeat totals clearly. Confirm quantities when needed. Handle cash carefully and visibly. Stay calm if lines become busy — work efficiently while remaining attentive."},
+    {label:"Closing the interaction",text:"End every transaction warmly: \"Thank you!\", \"Have a great day!\", or \"Enjoy camp!\""},
+    {label:"Dealing with upset guests",text:"Stay calm → Listen fully → Apologize sincerely → Get a supervisor if needed. Never argue. Staff should prioritize kindness over being right. Any discounts made to resolve a situation must be entered in Square and noted."}
+  ]},
+  {title:"Cash Handling",num:"2",sections:[
+    {label:"Starting drawer",text:"Each drawer begins with exactly $250. Breakdown: 4 × $20 bills, 5 × $10 bills, 10 × $5 bills, 40 × $1 bills, and 120 quarters."},
+    {label:"General rules",text:"Only assigned staff may operate a drawer. Drawers stay closed when not in use. No personal money in drawers. No borrowing — ever. Every transaction must be entered into Square, including cash sales."},
+    {label:"Cash transaction procedure",text:"State the total clearly. Receive cash and announce the denomination — place it visibly on top of the drawer. Enter the amount in Square and announce the change before opening the drawer. Count change back aloud. Only then place the bills inside the drawer."},
+    {label:"Example",text:"Total $7.25, customer gives $20. Say: \"Out of twenty.\" Count back: \"$7.25 — 8, 9, 10, and 20.\" Placing cash visibly on the counter protects both staff and guest in any dispute."},
+    {label:"Mid-shift drops",text:"Ask a director to count out and drop excess cash — never do it yourself. A drop slip goes in the drawer. If you need more change denominations, ask a director to make change for you."}
+  ]},
+  {title:"Opening & Closing",num:"3",sections:[
+    {label:"Arrive prepared",text:"Opening staff should arrive 15–20 minutes before opening, in uniform, and ready to begin on time."},
+    {label:"Opening — cash drawer",text:"Retrieve the drawer key and cash drawer from the secure location. Count the starting bank using the count sheet. Verify the total matches $250. Sign the opening cash log. Insert and lock the drawer."},
+    {label:"Opening — store",text:"Unlock the retail area, turn on lights, check cleanliness, empty trash if needed. Stock drinks and snacks, face merchandise neatly, refill impulse items near checkout. Confirm Square is online and receipt paper is loaded."},
+    {label:"Closing — count down",text:"Complete all transactions in Square. Remove drawer to a secure area. Separate the $250 starting bank. Count remaining cash smallest-to-largest. Compare to Square's expected cash total. Report any variance over $2 to management immediately."},
+    {label:"Closing — duties",text:"Straighten merchandise, restock shelves, sweep floors, empty trash, clean counters. Plug in devices to charge. Record any low-stock items. Lock drawers and doors, turn off lights, verify building is secure. No one leaves until all duties are complete."}
+  ]},
+  {title:"Square POS",num:"4",sections:[
+    {label:"Starting a sale",text:"Tap New Sale → scan item or select from the product library → confirm items and total before proceeding to payment."},
+    {label:"Card transactions",text:"Tap Charge → Card → have the customer tap, insert, or swipe → wait for the approval message → offer a receipt by text or print."},
+    {label:"Cash transactions",text:"Tap Charge → Cash → enter the exact cash received → confirm the total and change due → follow the full cash handling procedure from section 2."},
+    {label:"Refunds and voids",text:"Manager or director use only. Tap the transaction → Issue Refund or Void → enter the reason in notes. Never process a refund without director or manager approval."},
+    {label:"The golden rule",text:"If Square and the cash drawer do not match — stop immediately and call a supervisor. Do not guess. Do not adjust. Do not proceed."}
+  ]},
+  {title:"Security & Loss Prevention",num:"5",sections:[
+    {label:"Register rules",text:"Never leave a register unattended while unlocked. Only the assigned staff member for a drawer runs transactions on it. Do not share drawer access."},
+    {label:"Discounts and comps",text:"Only a director can approve a complimentary item, replacement, or guest recovery comp. Discounts may only be applied if pre-approved in Square. Manual discounts without approval are never permitted."},
+    {label:"Suspicious activity",text:"Notify management immediately if: counterfeit bills are suspected, a guest attempts fraud, the drawer appears short or over, or any equipment malfunctions."},
+    {label:"Theft policy",text:"Theft of cash, merchandise, food, or drinks — by anyone — may result in termination."},
+    {label:"Staff must never",text:"Share logins. Loan merchandise. Consume unpaid merchandise. Leave cash drawers unattended."}
+  ]},
+  {title:"Drawer Count-Down",num:"6",isCountdown:true}
+];
+
+function countdownHTML(){
+  return `
+    <div class="masthead" style="margin-bottom:1.5rem">
+      <div class="eyebrow">Section 6</div>
+      <h1 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:400">Drawer Count-Down</h1>
+    </div>
+    <div class="lesson-section"><div class="lesson-label">Purpose</div><div class="lesson-text">The count-down verifies sales accuracy, detects mistakes, maintains accountability, and prepares the next starting drawer. Every closing shift ends with this process.</div></div>
+    <div class="lesson-section"><div class="lesson-label">What you will need</div><div class="lesson-text">Calculator &nbsp;·&nbsp; Cash count sheet &nbsp;·&nbsp; Deposit bag &nbsp;·&nbsp; Pen &nbsp;·&nbsp; A second staff member to verify every count</div></div>
+    <div style="margin:1.5rem 0 0.5rem"><div class="lesson-label">The eight steps</div></div>
+    <div class="step-card"><div class="step-num">1</div><div><div class="step-title">Close the register in Square</div><div class="step-text">Complete all open transactions. Confirm no pending sales remain. Run or review the Square sales report if needed.</div></div></div>
+    <div class="step-card"><div class="step-num">2</div><div><div class="step-title">Remove the drawer</div><div class="step-text">Take the cash drawer out of the register and move it to a secure counting area. Only authorized staff may be present during the count.</div></div></div>
+    <div class="step-card" style="border-color:var(--gold)"><div class="step-num" style="color:var(--gold)">3</div><div><div class="step-title">Separate the $250 starting bank</div><div class="step-text">Count out exactly $250 in the correct denominations. Have a second staff member verify independently. Place in the cash bag — this is tomorrow's starting drawer.</div><div class="step-warn">Do not mix this with the deposit. Keep it separate from the start.</div></div></div>
+    <div class="step-card"><div class="step-num">4</div><div><div class="step-title">Count the remaining cash</div><div class="step-text">Count everything left from smallest to largest: quarters → $1s → $5s → $10s → $20s. Include any mid-shift drop slips. Record on count sheet. Second staff member verifies.</div></div></div>
+    <div class="step-card"><div class="step-num">5</div><div><div class="step-title">Verify against Square</div><div class="step-text">Compare the cash total you just counted against Square's expected cash sales figure for the shift. These numbers should match.</div></div></div>
+    <div class="step-card" style="border-color:var(--rust)"><div class="step-num">6</div><div><div class="step-title">Document any variances</div><div class="step-text">If the drawer is over or short by more than $2, notify management immediately. Record the variance on the count sheet.</div><div class="step-warn">Never hide a shortage or overage — report it right away, no matter the cause.</div></div></div>
+    <div class="step-card"><div class="step-num">7</div><div><div class="step-title">Prepare the deposit bag</div><div class="step-text">Place the counted cash (not the starting bank) into the deposit bag. Attach the count sheet labeled with date, location, and employee initials.</div></div></div>
+    <div class="step-card"><div class="step-num">8</div><div><div class="step-title">Deposit the cash</div><div class="step-text">Two people must transport the deposit bag together. Place deposit bag with count sheet in the safe. Place starting bank bag and key in safe separately.</div><div class="step-warn">Two people always. No exceptions.</div></div></div>
+    <div class="example-box"><div class="ex-label">Worked example</div><div class="example-step">Total in drawer at close: <span>$412</span></div><div class="example-step">Minus starting bank: <span>− $250</span></div><div class="example-step">Cash to verify: <span>$162</span></div><div class="example-step">Square expected cash sales: <span>$162</span></div><div class="example-step" style="margin-top:8px;color:var(--sage)">✓ Drawer balances. Proceed to deposit.</div></div>
+    <div class="interactive-sim"><div class="sim-label">Practice calculator</div><div class="sim-row"><label>Total in drawer ($)</label><input class="sim-input" type="number" inputmode="decimal" id="sim-total" placeholder="e.g. 412" oninput="calcSim()"></div><div class="sim-row"><label>Square expected ($)</label><input class="sim-input" type="number" inputmode="decimal" id="sim-square" placeholder="e.g. 162" oninput="calcSim()"></div><div class="sim-result" id="sim-result">Enter values above to check your drawer.</div></div>
+  `;
+}
+
+function calcSim(){
+  const total=parseFloat(document.getElementById('sim-total').value)||0;
+  const sq=parseFloat(document.getElementById('sim-square').value)||0;
+  const el=document.getElementById('sim-result');
+  if(!total&&!sq){el.textContent='Enter values above to check your drawer.';return;}
+  const remaining=total-250;const diff=remaining-sq;const abs=Math.abs(diff);
+  if(total<250){el.textContent='Total in drawer is less than the $250 starting bank. Check your count.';}
+  else if(abs===0){el.textContent='Drawer balances. Cash after bank: $'+remaining.toFixed(2)+' — matches Square.';}
+  else if(abs<=2){el.textContent='Within $'+abs.toFixed(2)+' — acceptable variance. Cash after bank: $'+remaining.toFixed(2)+'.';}
+  else{el.textContent='Variance of $'+abs.toFixed(2)+' '+(diff>0?'over':'short')+'. Cash after bank: $'+remaining.toFixed(2)+'. Notify management immediately.';}
+}
+
+function calcRsim(){
+  const total=parseFloat(document.getElementById('rsim-total').value)||0;
+  const sq=parseFloat(document.getElementById('rsim-square').value)||0;
+  const el=document.getElementById('rsim-result');
+  if(!total&&!sq){el.textContent='Enter values above to check your drawer.';return;}
+  const remaining=total-250;const diff=remaining-sq;const abs=Math.abs(diff);
+  if(total<250){el.textContent='Total in drawer is less than the $250 starting bank. Check your count.';}
+  else if(abs===0){el.textContent='Drawer balances. Cash after bank: $'+remaining.toFixed(2)+' — matches Square.';}
+  else if(abs<=2){el.textContent='Within $'+abs.toFixed(2)+' — acceptable. Cash after bank: $'+remaining.toFixed(2)+'.';}
+  else{el.textContent='Variance of $'+abs.toFixed(2)+' '+(diff>0?'over':'short')+'. Cash after bank: $'+remaining.toFixed(2)+'. Notify management immediately.';}
+}
+
+const resources={
+  open:`
+    <div class="masthead" style="margin-bottom:1.5rem"><div class="eyebrow">Resource</div><h1 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:400">Opening Checklist</h1></div>
+    <div class="section-label">Lodge Camp Store</div>
+    <div class="sub-section-label">Store setup</div>${cl(["Unlock retail area","Turn on lights","Check cleanliness of sales floor","Empty trash if needed","Restock and adjust visible merchandise"])}
+    <div class="sub-section-label">Equipment</div>${cl(["Turn on Square Terminals","Confirm internet connection","Ensure receipt paper is loaded","Verify card reader is functioning"])}
+    <div class="sub-section-label">Cash drawer setup</div>${cl(["Retrieve drawer key","Retrieve cash drawer from secure location","Count starting bank — verify $250","Sign opening cash log","Insert drawer into register and lock into place"])}
+    <div class="sub-section-label">Product check</div>${cl(["Stock drinks and snacks","Face merchandise neatly","Refill impulse items near checkout (stickers, toiletries)","Check inventory of popular sizes and items"])}
+    <div class="sub-section-label">Final ready check</div>${cl(["Music appropriate and at proper volume","Counter clean","Pens and supplies available","Open on time"])}
+    <div class="divider" style="margin-top:1.5rem">Lakeside Snack Shop</div>
+    <div class="sub-section-label">Facility setup</div>${cl(["Turn on lights and fans","Check cleanliness"])}
+    <div class="sub-section-label">Equipment</div>${cl(["Turn on Square Terminal","Check internet connection","Verify payment system works","Load receipt paper if needed"])}
+    <div class="sub-section-label">Cash drawer</div>${cl(["Retrieve starting bank","Count starting bank — verify $250","Record on opening log","Install drawer securely"])}
+    <div class="sub-section-label">Food and beverage</div>${cl(["Stock cold drinks — ensure cold items accessible","Fill chip and snack displays","Restock candy","Verify coolers are cold"])}
+    <div class="sub-section-label">Final ready check</div>${cl(["Trash emptied","Area clean","Window and counter presentable","Open window on time and wipe counters"])}
+  `,
+  close:`
+    <div class="masthead" style="margin-bottom:1.5rem"><div class="eyebrow">Resource</div><h1 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:400">Closing Checklist</h1><div class="sub">Both locations</div></div>
+    <p class="gentle-note">Please see all duties through before heading out for the evening.</p>
+    <div class="sub-section-label">Store cleanup</div>${cl(["Straighten merchandise","Restock shelves","Return misplaced items to correct location","Sweep floors","Empty trash","Clean counters"])}
+    <div class="sub-section-label">Equipment</div>${cl(["Log out of Square if applicable","Plug in devices for overnight charging","Restock receipt paper if low"])}
+    <div class="sub-section-label">Inventory notes</div>${cl(["Record low-stock shirt sizes","Note low hat inventory","Flag low drink and snack levels"])}
+    <div class="sub-section-label">Cash drawer count-down</div>${cl(["Complete full count-down procedure (see Count-Down Reference)","Document any variance over $2 — notify management","Prepare and label deposit bag","Two people transport deposit to safe"])}
+    <div class="sub-section-label">Final security</div>${cl(["Lock drawers","Lock doors","Turn off lights","Verify building is secure"])}
+  `,
+  countdown:`
+    <div class="masthead" style="margin-bottom:1.5rem"><div class="eyebrow">Resource</div><h1 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:400">Count-Down Reference</h1><div class="sub">Keep this handy at every closing shift</div></div>
+    <div class="lesson-section"><div class="lesson-label">What you need</div><div class="lesson-text">Calculator &nbsp;·&nbsp; Cash count sheet &nbsp;·&nbsp; Deposit bag &nbsp;·&nbsp; Pen &nbsp;·&nbsp; A second staff member present for all counts</div></div>
+    <div class="lesson-section"><div class="lesson-label">Starting bank breakdown</div><div class="lesson-text">4 × $20 bills ($80) &nbsp;·&nbsp; 5 × $10 bills ($50) &nbsp;·&nbsp; 10 × $5 bills ($50) &nbsp;·&nbsp; 40 × $1 bills ($40) &nbsp;·&nbsp; 120 quarters ($30) &nbsp;·&nbsp; Total: $250</div></div>
+    <div style="margin:1.5rem 0 0.5rem"><div class="lesson-label">The eight steps</div></div>
+    <div class="step-card"><div class="step-num">1</div><div><div class="step-title">Close the register in Square</div><div class="step-text">Complete all transactions. No pending sales should remain open.</div></div></div>
+    <div class="step-card"><div class="step-num">2</div><div><div class="step-title">Remove the drawer</div><div class="step-text">Move cash drawer to a secure, private counting area. Authorized staff only.</div></div></div>
+    <div class="step-card" style="border-color:var(--gold)"><div class="step-num" style="color:var(--gold)">3</div><div><div class="step-title">Separate the $250 starting bank</div><div class="step-text">Count out $250 exactly in correct denominations. Second staff member verifies. Place in cash bag — keep completely separate from deposit.</div><div class="step-warn">4 × $20 · 5 × $10 · 10 × $5 · 40 × $1 · 120 quarters</div></div></div>
+    <div class="step-card"><div class="step-num">4</div><div><div class="step-title">Count remaining cash</div><div class="step-text">Smallest to largest: quarters → $1s → $5s → $10s → $20s. Include mid-shift drop slips. Record on count sheet. Second staff member verifies.</div></div></div>
+    <div class="step-card"><div class="step-num">5</div><div><div class="step-title">Verify against Square</div><div class="step-text">Cash counted must equal Square's expected cash sales total for the shift.</div></div></div>
+    <div class="step-card" style="border-color:var(--rust)"><div class="step-num">6</div><div><div class="step-title">Document variances</div><div class="step-text">Over or short by more than $2? Notify management immediately. Note the variance on the count sheet.</div><div class="step-warn">Never hide a shortage or overage — always report.</div></div></div>
+    <div class="step-card"><div class="step-num">7</div><div><div class="step-title">Prepare deposit bag</div><div class="step-text">Place counted cash (not the starting bank) in the deposit bag. Attach the count sheet labeled with date, location, and employee initials.</div></div></div>
+    <div class="step-card"><div class="step-num">8</div><div><div class="step-title">Two people deliver the deposit</div><div class="step-text">Transport deposit bag to safe together. Place starting bank bag and key in safe separately.</div><div class="step-warn">Two people always. No exceptions.</div></div></div>
+    <div class="example-box"><div class="ex-label">Worked example</div><div class="example-step">Total in drawer at close: <span>$412</span></div><div class="example-step">Minus starting bank: <span>− $250</span></div><div class="example-step">Cash to verify: <span>$162</span></div><div class="example-step">Square expected cash sales: <span>$162</span></div><div class="example-step" style="margin-top:8px;color:var(--sage)">✓ Drawer balances. Proceed to deposit.</div></div>
+    <div class="interactive-sim"><div class="sim-label">Drawer check calculator</div><div class="sim-row"><label>Total in drawer ($)</label><input class="sim-input" type="number" inputmode="decimal" id="rsim-total" placeholder="e.g. 412" oninput="calcRsim()"></div><div class="sim-row"><label>Square expected ($)</label><input class="sim-input" type="number" inputmode="decimal" id="rsim-square" placeholder="e.g. 162" oninput="calcRsim()"></div><div class="sim-result" id="rsim-result">Enter values above to check your drawer.</div></div>
+  `
+};
+
+const questions=[
+  {q:"How far in advance should opening staff arrive before the store opens?",options:["5–10 minutes","15–20 minutes","30 minutes","Exactly on time"],answer:1,explain:"Opening staff should arrive 15–20 minutes before opening, in uniform and ready to begin."},
+  {q:"What is the starting cash amount for each drawer?",options:["$150","$200","$250","$300"],answer:2,explain:"Each drawer starts with exactly $250 in a specific breakdown of bills and quarters."},
+  {q:"How many quarters are included in the starting bank?",options:["80","100","120","150"],answer:2,explain:"The starting bank includes 120 quarters, totalling $30."},
+  {q:"When should received cash be placed into the drawer?",options:["As soon as you receive it","After entering the amount in Square","After counting change back to the customer","Before announcing the change"],answer:2,explain:"Bills go into the drawer only after the full change-back is complete — not before."},
+  {q:"A customer hands you $20 for a $7.25 purchase. What do you say first?",options:["'Your change is $12.75'","'Out of twenty'","'Thank you!'","'Let me check the total'"],answer:1,explain:"State the denomination received aloud — 'Out of twenty' — before opening the drawer."},
+  {q:"Where should received cash sit during the transaction while change is counted?",options:["In the drawer immediately","In your pocket","Visibly on top of the drawer","Under the counter"],answer:2,explain:"Cash stays visible on top of the drawer until the change is fully returned."},
+  {q:"Who can approve a complimentary item or guest recovery comp?",options:["Any staff member","A fellow team member","A director only","The guest themselves"],answer:2,explain:"Only a director can approve comps, replacements, or guest recovery items."},
+  {q:"What should you do if Square and the cash drawer do not match?",options:["Adjust the drawer quietly","Guess and move on","Stop and call a supervisor immediately","Void the last transaction"],answer:2,explain:"The golden rule: if Square and the drawer don't match, stop and call a supervisor immediately."},
+  {q:"What is the correct response when a guest is upset?",options:["Explain why they are wrong","Stay calm, listen, apologize, escalate if needed","Offer a free item without approval","Ignore it until they calm down"],answer:1,explain:"Stay calm → Listen → Apologize sincerely → Get a supervisor if needed. Never argue."},
+  {q:"During the count-down, what do you separate out first?",options:["Large bills only","The $250 starting bank","All coins first","The deposit bag"],answer:1,explain:"Step 3 is to separate the $250 starting bank before counting the remaining cash."},
+  {q:"In what order do you count remaining denominations during count-down?",options:["Largest to smallest","Alphabetically","Smallest to largest","It does not matter"],answer:2,explain:"Always count smallest to largest: quarters → $1s → $5s → $10s → $20s."},
+  {q:"How many people must transport the deposit bag?",options:["One","Two","Three","Any available staff"],answer:1,explain:"Two people must always transport the deposit bag to the drop location together."},
+  {q:"Which of these is something staff must never do?",options:["Greet guests warmly","Consume unpaid merchandise","Report low inventory","Count change back aloud"],answer:1,explain:"Staff must never consume unpaid merchandise — nor share logins or leave drawers unattended."},
+  {q:"At what threshold must a drawer variance be reported?",options:["Any variance","More than $1","More than $2","More than $5"],answer:2,explain:"Variances of more than $2 in either direction must be reported to management immediately."},
+  {q:"Where are Ramen and Hot Chocolate exclusively available?",options:["Lakeside Snack Shop","Both locations","Lodge Camp Store","Neither — special order only"],answer:2,explain:"Ramen and Hot Chocolate are exclusive products of the Lodge Camp Store."},
+  {q:"What must be attached to the deposit bag before it goes to the safe?",options:["A sticky note with the amount","A labeled cash count sheet with date, location, and initials","Nothing — just the cash","The Square receipt printout"],answer:1,explain:"The deposit bag must have a clearly labeled cash count sheet showing date, location, and employee initials."}
+];
+
+let curLesson=0,curQ=0,score=0,answered=false,wrong=[];
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function goLesson(i){
+  curLesson=i;
+  const l=lessons[i];
+  let h='';
+  if(l.isCountdown){
+    h=countdownHTML();
+  } else {
+    h=`<div class="masthead" style="margin-bottom:1.5rem"><div class="eyebrow">Section ${l.num}</div><h1 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:400">${l.title}</h1></div>`;
+    l.sections.forEach(s=>{h+=`<div class="lesson-section"><div class="lesson-label">${s.label}</div><div class="lesson-text">${s.text}</div></div>`;});
+  }
+  document.getElementById('lesson-content').innerHTML=h;
+  show('lesson');
+}
+
+function goResource(key){
+  document.getElementById('resource-content').innerHTML=resources[key];
+  show('resource');
+}
+
+function startQuiz(){curQ=0;score=0;answered=false;wrong=[];renderQ();show('quiz');}
+
+function renderQ(){
+  const q=questions[curQ];
+  const pct=Math.round(curQ/questions.length*100);
+  document.getElementById('progress').style.width=pct+'%';
+  let h=`<div class="q-label">Question ${curQ+1} of ${questions.length}</div><div class="q-text">${q.q}</div>`;
+  q.options.forEach((o,i)=>{h+=`<button class="opt" id="opt${i}" onclick="checkAns(${i})">${String.fromCharCode(65+i)}.&nbsp;&nbsp;${o}</button>`;});
+  h+=`<div class="feedback-box" id="fb"></div><div class="nav-row" id="nav" style="display:none"><button class="btn-ghost" onclick="show('home')">← Home</button><button class="btn-primary" style="flex:1;margin-left:8px" onclick="nextQ()">${curQ<questions.length-1?'Next →':'See results →'}</button></div>`;
+  document.getElementById('quiz-content').innerHTML=h;
+  answered=false;
+}
+
+function checkAns(i){
+  if(answered)return;answered=true;
+  const q=questions[curQ];
+  const fb=document.getElementById('fb');
+  document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+  if(i===q.answer){score++;document.getElementById('opt'+i).classList.add('correct');fb.className='feedback-box correct show';fb.innerHTML='Correct. '+q.explain;}
+  else{document.getElementById('opt'+i).classList.add('wrong');document.getElementById('opt'+q.answer).classList.add('reveal');fb.className='feedback-box wrong show';fb.innerHTML='Not quite. '+q.explain;wrong.push(curQ);}
+  document.getElementById('nav').style.display='flex';
+}
+
+function nextQ(){curQ++;if(curQ>=questions.length){showResults();return;}renderQ();}
+
+function showResults(){
+  document.getElementById('progress').style.width='100%';
+  const pct=Math.round(score/questions.length*100);
+  const pass=pct>=80;
+  let h=`<div class="score-frame"><div class="eyebrow">Your result</div><div class="score-pct">${pct}%</div><div class="score-counts">${score} of ${questions.length} correct</div><div class="score-sub">${pass?'Cleared for the floor':'Please review and retake'}</div></div><p style="font-size:13px;color:var(--rust);line-height:1.75;margin-bottom:1.5rem;text-align:center;font-family:'Playfair Display',serif;font-style:italic">${pass?'Well done. You may proceed to your first supervised shift.':'Review the flagged sections below, then retake the quiz before your first shift.'}</p>`;
+  if(wrong.length>0){
+    h+=`<div class="divider">review notes</div><div style="margin-bottom:1.5rem">`;
+    wrong.forEach(i=>{const q=questions[i];h+=`<div class="review-item"><div class="review-q">${q.q}</div><div class="review-a">${q.explain}</div></div>`;});
+    h+=`</div>`;
+  }
+  h+=`<div class="nav-row"><button class="btn-ghost" onclick="show('home')">← Home</button><button class="btn-primary" style="flex:1;margin-left:8px" onclick="startQuiz()">Retake quiz →</button></div>`;
+  document.getElementById('results-content').innerHTML=h;
+  show('results');
+}
+</script>
+</body>
+</html>
