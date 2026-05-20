@@ -6,6 +6,7 @@
 <title>Camp Tanglewood — Retail Operations</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
@@ -15,14 +16,10 @@
 }
 html{background:var(--cream)}
 body{font-family:'Courier Prime',monospace;background:var(--cream);color:var(--ink);min-height:100vh;padding:0;margin:0}
-
-/* Layout */
 .wrap{max-width:var(--max);margin:0 auto;padding:2rem 1.25rem 4rem}
-
-/* Screens */
-.screen{display:none;animation:fadeIn 0.2s ease}
+.screen{display:none;animation:fadeIn 0.25s ease}
 .screen.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
 /* Masthead */
 .masthead{text-align:center;border-top:2px solid var(--rust);border-bottom:2px solid var(--rust);padding:1.1rem 0;margin-bottom:2rem}
@@ -30,14 +27,11 @@ body{font-family:'Courier Prime',monospace;background:var(--cream);color:var(--i
 .masthead h1{font-family:'Playfair Display',serif;font-size:clamp(22px,5vw,28px);font-weight:400;color:var(--ink);line-height:1.25}
 .masthead .sub{font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:0.06em}
 
-/* Section label */
 .section-label{font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--rust);margin-bottom:10px}
-
-/* Divider */
 .divider{font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--rust);margin:1.5rem 0;display:flex;align-items:center;gap:10px}
 .divider::before,.divider::after{content:'';flex:1;height:0.5px;background:var(--rust);opacity:0.35}
 
-/* Nav tabs — home */
+/* Nav tabs */
 .nav-tabs{display:flex;flex-direction:column;gap:10px;margin-bottom:1.5rem}
 .nav-tab{background:var(--blush);border:0.5px solid var(--rust);border-radius:2px;padding:1rem 1.25rem;cursor:pointer;transition:background 0.15s;display:flex;align-items:center;justify-content:space-between}
 .nav-tab:hover,.nav-tab:active{background:#DFC8B4}
@@ -53,7 +47,7 @@ body{font-family:'Courier Prime',monospace;background:var(--cream);color:var(--i
 @media(max-width:360px){.resource-grid{grid-template-columns:1fr}}
 .resource-card{background:transparent;border:0.5px solid var(--sage);border-radius:2px;padding:.9rem .75rem;cursor:pointer;text-align:center;transition:background 0.15s}
 .resource-card:hover,.resource-card:active{background:#E8F0E8}
-.resource-card .r-icon{font-size:20px;color:var(--sage);margin-bottom:5px}
+.resource-card .r-icon{font-size:18px;color:var(--sage);margin-bottom:5px;font-family:'Playfair Display',serif}
 .resource-card .r-title{font-family:'Playfair Display',serif;font-size:12px;color:var(--ink);line-height:1.3}
 
 /* Buttons */
@@ -61,6 +55,8 @@ body{font-family:'Courier Prime',monospace;background:var(--cream);color:var(--i
 .btn-primary:hover,.btn-primary:active{background:#7A3F28}
 .btn-ghost{background:transparent;border:0.5px solid var(--rust);color:var(--rust);border-radius:2px;padding:9px 16px;font-family:'Courier Prime',monospace;font-size:12px;letter-spacing:0.08em;cursor:pointer;text-transform:uppercase;transition:background 0.15s;white-space:nowrap}
 .btn-ghost:hover,.btn-ghost:active{background:var(--blush)}
+.btn-sage{background:transparent;border:0.5px solid var(--sage);color:var(--sage);border-radius:2px;padding:9px 16px;font-family:'Courier Prime',monospace;font-size:12px;letter-spacing:0.08em;cursor:pointer;text-transform:uppercase;transition:background 0.15s;white-space:nowrap}
+.btn-sage:hover{background:#E8F0E8}
 
 /* Lesson */
 .lesson-section{margin-bottom:1.25rem}
@@ -80,7 +76,6 @@ body{font-family:'Courier Prime',monospace;background:var(--cream);color:var(--i
 .check-dot{width:6px;height:6px;border-radius:50%;background:var(--sage);flex-shrink:0;margin-top:5px}
 .sub-section-label{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--sage);margin:12px 0 6px}
 
-/* Gentle note */
 .gentle-note{text-align:center;font-family:'Playfair Display',serif;font-size:14px;font-style:italic;color:var(--rust);border-top:0.5px solid #C8BC9F;border-bottom:0.5px solid #C8BC9F;padding:10px 0;margin:0 0 1.25rem}
 
 /* Example box */
@@ -112,18 +107,20 @@ body{font-family:'Courier Prime',monospace;background:var(--cream);color:var(--i
 .feedback-box.correct{background:#D4E8D4;border-left:3px solid var(--sage);color:#2A4A2A}
 .feedback-box.wrong{background:#F0DDD8;border-left:3px solid var(--rust);color:#5A2010}
 
-/* Nav row */
 .nav-row{display:flex;gap:8px;align-items:center;margin-top:1.25rem}
 
-/* Results */
-.score-frame{border:2px solid var(--rust);border-radius:2px;padding:1.75rem;text-align:center;margin-bottom:1.5rem;background:var(--blush)}
-.score-pct{font-family:'Playfair Display',serif;font-size:clamp(44px,12vw,56px);color:var(--rust);line-height:1}
-.score-counts{font-size:13px;color:var(--ink);margin:6px 0 4px}
-.score-sub{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--sage);margin-top:4px}
-.review-item{border-bottom:0.5px solid #C8BC9F;padding:12px 0}
+/* Pass / Fail screens */
+.result-screen{text-align:center;padding:1rem 0}
+.pine-wrap{margin:0 auto 1.5rem;width:160px}
+.pass-heading{font-family:'Playfair Display',serif;font-size:clamp(26px,7vw,34px);font-weight:400;color:var(--sage);margin-bottom:.5rem}
+.fail-heading{font-family:'Playfair Display',serif;font-size:clamp(26px,7vw,34px);font-weight:400;color:var(--rust);margin-bottom:.5rem}
+.result-score{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:1.25rem}
+.result-msg{font-family:'Playfair Display',serif;font-style:italic;font-size:15px;color:var(--ink);line-height:1.75;max-width:380px;margin:0 auto 1.75rem}
+.review-item{border-bottom:0.5px solid #C8BC9F;padding:12px 0;text-align:left}
 .review-item:last-child{border-bottom:none}
 .review-q{font-family:'Playfair Display',serif;font-size:13px;color:var(--ink);margin-bottom:4px}
 .review-a{font-size:12px;color:var(--rust);line-height:1.6}
+.sending-note{font-size:12px;color:var(--muted);font-style:italic;margin-top:.75rem;min-height:18px}
 </style>
 </head>
 <body>
@@ -202,20 +199,131 @@ body{font-family:'Courier Prime',monospace;background:var(--cream);color:var(--i
   </div>
 </div>
 
+<!-- NAME ENTRY -->
+<div id="nameentry" class="screen">
+  <div class="masthead">
+    <div class="eyebrow">Before you begin</div>
+    <h1 style="font-size:clamp(20px,5vw,26px)">What is your name?</h1>
+  </div>
+  <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:14px;color:var(--muted);text-align:center;margin-bottom:1.5rem;line-height:1.7">Your name will appear on your results screen<br>so you can share it with your manager.</p>
+  <input id="staff-name-input" type="text" placeholder="First and last name" autocomplete="name"
+    style="display:block;width:100%;border:0.5px solid #B8A898;border-radius:2px;padding:13px 14px;font-family:'Courier Prime',monospace;font-size:15px;background:var(--cream);color:var(--ink);margin-bottom:1rem;outline:none"
+    onkeydown="if(event.key==='Enter')beginQuiz()"
+  >
+  <button class="btn-primary" onclick="beginQuiz()">Begin the quiz →</button>
+  <div class="nav-row" style="margin-top:.75rem;justify-content:center">
+    <button class="btn-ghost" onclick="show('home')">← Back</button>
+  </div>
+</div>
+
 <!-- QUIZ -->
 <div id="quiz" class="screen">
   <div class="progress-track"><div class="progress-fill" id="progress"></div></div>
   <div id="quiz-content"></div>
 </div>
 
-<!-- RESULTS -->
-<div id="results" class="screen">
-  <div id="results-content"></div>
+<!-- PASS SCREEN -->
+<div id="pass" class="screen">
+  <div class="result-screen">
+    <div class="pine-wrap">
+      <svg viewBox="0 0 160 220" width="160" height="220" xmlns="http://www.w3.org/2000/svg">
+        <!-- Stars -->
+        <circle cx="30" cy="18" r="1.5" fill="#C4933F" opacity="0.7"/>
+        <circle cx="128" cy="12" r="1.2" fill="#C4933F" opacity="0.5"/>
+        <circle cx="80" cy="8" r="1" fill="#C4933F" opacity="0.6"/>
+        <circle cx="50" cy="30" r="1" fill="#C4933F" opacity="0.4"/>
+        <circle cx="140" cy="35" r="1.5" fill="#C4933F" opacity="0.5"/>
+        <circle cx="18" cy="50" r="1" fill="#C4933F" opacity="0.4"/>
+        <!-- Moon -->
+        <path d="M138 22 a10 10 0 1 1 0 .01" fill="none" stroke="#C4933F" stroke-width="1.5" opacity="0.6"/>
+        <!-- Tree shadow/ground -->
+        <ellipse cx="80" cy="212" rx="28" ry="5" fill="#5C7A5C" opacity="0.18"/>
+        <!-- Trunk -->
+        <rect x="73" y="182" width="14" height="28" rx="2" fill="#7A5C3A"/>
+        <rect x="76" y="182" width="4" height="28" fill="#6B4F30" opacity="0.35"/>
+        <!-- Layer 5 (widest, bottom) -->
+        <polygon points="80,120 28,190 132,190" fill="#3D6642"/>
+        <polygon points="80,120 30,190 52,190" fill="#4A7A50" opacity="0.5"/>
+        <!-- Layer 4 -->
+        <polygon points="80,95 35,162 125,162" fill="#4A7A50"/>
+        <polygon points="80,95 37,162 55,162" fill="#5C8C60" opacity="0.45"/>
+        <!-- Layer 3 -->
+        <polygon points="80,72 42,135 118,135" fill="#5C7A5C"/>
+        <polygon points="80,72 44,135 60,135" fill="#6E9070" opacity="0.45"/>
+        <!-- Layer 2 -->
+        <polygon points="80,50 48,108 112,108" fill="#4A7A50"/>
+        <polygon points="80,50 50,108 64,108" fill="#5C8C60" opacity="0.4"/>
+        <!-- Layer 1 (top) -->
+        <polygon points="80,26 54,80 106,80" fill="#3D6642"/>
+        <polygon points="80,26 56,80 67,80" fill="#4A7A50" opacity="0.5"/>
+        <!-- Tip highlight -->
+        <polygon points="80,26 77,42 83,42" fill="#6E9070" opacity="0.6"/>
+        <!-- Snow touches -->
+        <polygon points="80,26 76,36 84,36" fill="#F5F0E8" opacity="0.55"/>
+        <polygon points="80,50 72,62 88,62" fill="#F5F0E8" opacity="0.3"/>
+        <!-- Gold star on top -->
+        <polygon points="80,18 82,24 88,24 83,28 85,34 80,30 75,34 77,28 72,24 78,24" fill="#C4933F" opacity="0.9"/>
+      </svg>
+    </div>
+    <div class="pass-heading">Congratulations,</div>
+    <div id="pass-name" style="font-family:'Playfair Display',serif;font-size:clamp(22px,6vw,30px);color:var(--ink);margin-bottom:.6rem;font-weight:400"></div>
+    <div class="result-score" id="pass-score"></div>
+    <div class="result-msg">You have cleared the quiz and are ready for your first supervised shift at Camp Tanglewood. Screenshot this screen and send it to your manager.</div>
+    <div class="sending-note" id="pass-sending"></div>
+    <div class="nav-row" style="justify-content:center;margin-top:1rem">
+      <button class="btn-ghost" onclick="show('home')">← Home</button>
+    </div>
+  </div>
 </div>
 
-</div><!-- /wrap -->
+<!-- FAIL SCREEN -->
+<div id="fail" class="screen">
+  <div class="result-screen">
+    <div class="masthead" style="margin-bottom:1.5rem">
+      <div class="eyebrow">Quiz result</div>
+      <h1 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:400">Not quite there yet.</div>
+    </div>
+    <div class="result-score" id="fail-score"></div>
+    <div class="result-msg">A passing score of 80% is required before your first shift. Review the sections below, work through the relevant modules, and give it another go — you've got this.</div>
+    <div class="divider">review these topics</div>
+    <div id="fail-review" style="margin-bottom:1.5rem;text-align:left"></div>
+    <div class="nav-row" style="justify-content:center">
+      <button class="btn-ghost" onclick="show('home')">← Modules</button>
+      <button class="btn-primary" style="flex:1;margin-left:8px" onclick="startQuiz()">Retake quiz →</button>
+    </div>
+  </div>
+</div>
+
+</div>
 
 <script>
+// ── EmailJS config ── replace these three values after setting up emailjs.com ──
+const EMAILJS_PUBLIC_KEY  = '63HyeAOpAGIfcUzJf';
+const EMAILJS_SERVICE_ID  = 'service_cbsbzcr';
+const EMAILJS_TEMPLATE_ID = 'template_w7w6tlq';
+const NOTIFY_EMAIL        = 'tuan@camptanglewood.com';
+// ────────────────────────────────────────────────────────────────────────────────
+
+(function(){
+  if(EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY'){
+    emailjs.init({publicKey: EMAILJS_PUBLIC_KEY});
+  }
+})();
+
+function sendPassEmail(name, score, total, pct){
+  if(EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') return;
+  emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+    to_email: NOTIFY_EMAIL,
+    staff_name: staffName || 'A staff member',
+    score: score,
+    total: total,
+    percentage: pct,
+    passed: 'Yes'
+  }).then(function(res){console.log('EmailJS success:', res);}).catch(function(err){
+    console.warn('EmailJS error status:', err.status); console.warn('EmailJS error text:', err.text); console.warn('EmailJS full:', JSON.stringify(err));
+  });
+}
+
 function cl(items){
   return items.map(i=>`<div class="checklist-item"><div class="check-dot"></div><span>${i}</span></div>`).join('');
 }
@@ -239,7 +347,7 @@ const lessons=[
     {label:"Arrive prepared",text:"Opening staff should arrive 15–20 minutes before opening, in uniform, and ready to begin on time."},
     {label:"Opening — cash drawer",text:"Retrieve the drawer key and cash drawer from the secure location. Count the starting bank using the count sheet. Verify the total matches $250. Sign the opening cash log. Insert and lock the drawer."},
     {label:"Opening — store",text:"Unlock the retail area, turn on lights, check cleanliness, empty trash if needed. Stock drinks and snacks, face merchandise neatly, refill impulse items near checkout. Confirm Square is online and receipt paper is loaded."},
-    {label:"Closing — count down",text:"Complete all transactions in Square. Remove drawer to a secure area. Separate the $250 starting bank. Count remaining cash smallest-to-largest. Compare to Square's expected cash total. Report any variance over $2 to management immediately."},
+    {label:"Closing — count down",text:"Complete all transactions in Square. Remove drawer to a secure area. Separate the $250 starting bank. Count remaining cash largest-to-smallest. Compare to Square's expected cash total. Report any variance over $2 to management immediately."},
     {label:"Closing — duties",text:"Straighten merchandise, restock shelves, sweep floors, empty trash, clean counters. Plug in devices to charge. Record any low-stock items. Lock drawers and doors, turn off lights, verify building is secure. No one leaves until all duties are complete."}
   ]},
   {title:"Square POS",num:"4",sections:[
@@ -261,21 +369,18 @@ const lessons=[
 
 function countdownHTML(){
   return `
-    <div class="masthead" style="margin-bottom:1.5rem">
-      <div class="eyebrow">Section 6</div>
-      <h1 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:400">Drawer Count-Down</h1>
-    </div>
+    <div class="masthead" style="margin-bottom:1.5rem"><div class="eyebrow">Section 6</div><h1 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:400">Drawer Count-Down</h1></div>
     <div class="lesson-section"><div class="lesson-label">Purpose</div><div class="lesson-text">The count-down verifies sales accuracy, detects mistakes, maintains accountability, and prepares the next starting drawer. Every closing shift ends with this process.</div></div>
     <div class="lesson-section"><div class="lesson-label">What you will need</div><div class="lesson-text">Calculator &nbsp;·&nbsp; Cash count sheet &nbsp;·&nbsp; Deposit bag &nbsp;·&nbsp; Pen &nbsp;·&nbsp; A second staff member to verify every count</div></div>
     <div style="margin:1.5rem 0 0.5rem"><div class="lesson-label">The eight steps</div></div>
-    <div class="step-card"><div class="step-num">1</div><div><div class="step-title">Close the register in Square</div><div class="step-text">Complete all open transactions. Confirm no pending sales remain. Run or review the Square sales report if needed.</div></div></div>
-    <div class="step-card"><div class="step-num">2</div><div><div class="step-title">Remove the drawer</div><div class="step-text">Take the cash drawer out of the register and move it to a secure counting area. Only authorized staff may be present during the count.</div></div></div>
-    <div class="step-card" style="border-color:var(--gold)"><div class="step-num" style="color:var(--gold)">3</div><div><div class="step-title">Separate the $250 starting bank</div><div class="step-text">Count out exactly $250 in the correct denominations. Have a second staff member verify independently. Place in the cash bag — this is tomorrow's starting drawer.</div><div class="step-warn">Do not mix this with the deposit. Keep it separate from the start.</div></div></div>
-    <div class="step-card"><div class="step-num">4</div><div><div class="step-title">Count the remaining cash</div><div class="step-text">Count everything left from smallest to largest: quarters → $1s → $5s → $10s → $20s. Include any mid-shift drop slips. Record on count sheet. Second staff member verifies.</div></div></div>
-    <div class="step-card"><div class="step-num">5</div><div><div class="step-title">Verify against Square</div><div class="step-text">Compare the cash total you just counted against Square's expected cash sales figure for the shift. These numbers should match.</div></div></div>
-    <div class="step-card" style="border-color:var(--rust)"><div class="step-num">6</div><div><div class="step-title">Document any variances</div><div class="step-text">If the drawer is over or short by more than $2, notify management immediately. Record the variance on the count sheet.</div><div class="step-warn">Never hide a shortage or overage — report it right away, no matter the cause.</div></div></div>
-    <div class="step-card"><div class="step-num">7</div><div><div class="step-title">Prepare the deposit bag</div><div class="step-text">Place the counted cash (not the starting bank) into the deposit bag. Attach the count sheet labeled with date, location, and employee initials.</div></div></div>
-    <div class="step-card"><div class="step-num">8</div><div><div class="step-title">Deposit the cash</div><div class="step-text">Two people must transport the deposit bag together. Place deposit bag with count sheet in the safe. Place starting bank bag and key in safe separately.</div><div class="step-warn">Two people always. No exceptions.</div></div></div>
+    <div class="step-card"><div class="step-num">1</div><div><div class="step-title">Close the register in Square</div><div class="step-text">Complete all open transactions. Confirm no pending sales remain.</div></div></div>
+    <div class="step-card"><div class="step-num">2</div><div><div class="step-title">Remove the drawer</div><div class="step-text">Move to a secure counting area. Only authorized staff present.</div></div></div>
+    <div class="step-card" style="border-color:var(--gold)"><div class="step-num" style="color:var(--gold)">3</div><div><div class="step-title">Separate the $250 starting bank</div><div class="step-text">Count out exactly $250 in the correct denominations. Second staff member verifies. Place in cash bag — this is tomorrow's starting drawer.</div><div class="step-warn">Do not mix with the deposit. Keep separate from the start.</div></div></div>
+    <div class="step-card"><div class="step-num">4</div><div><div class="step-title">Count the remaining cash</div><div class="step-text">Largest to smallest: $20s → $10s → $5s → $1s → quarters. Include mid-shift drop slips. Record on count sheet. Second staff member verifies.</div></div></div>
+    <div class="step-card"><div class="step-num">5</div><div><div class="step-title">Verify against Square</div><div class="step-text">Compare your cash total against Square's expected cash sales figure for the shift.</div></div></div>
+    <div class="step-card" style="border-color:var(--rust)"><div class="step-num">6</div><div><div class="step-title">Document any variances</div><div class="step-text">Over or short by more than $2? Notify management immediately. Record on count sheet.</div><div class="step-warn">Never hide a shortage or overage — report right away.</div></div></div>
+    <div class="step-card"><div class="step-num">7</div><div><div class="step-title">Prepare the deposit bag</div><div class="step-text">Place counted cash (not the starting bank) in the deposit bag. Attach count sheet with date, location, and employee initials.</div></div></div>
+    <div class="step-card"><div class="step-num">8</div><div><div class="step-title">Deposit the cash</div><div class="step-text">Two people transport the deposit bag together. Place deposit and starting bank bag in safe separately.</div><div class="step-warn">Two people always. No exceptions.</div></div></div>
     <div class="example-box"><div class="ex-label">Worked example</div><div class="example-step">Total in drawer at close: <span>$412</span></div><div class="example-step">Minus starting bank: <span>− $250</span></div><div class="example-step">Cash to verify: <span>$162</span></div><div class="example-step">Square expected cash sales: <span>$162</span></div><div class="example-step" style="margin-top:8px;color:var(--sage)">✓ Drawer balances. Proceed to deposit.</div></div>
     <div class="interactive-sim"><div class="sim-label">Practice calculator</div><div class="sim-row"><label>Total in drawer ($)</label><input class="sim-input" type="number" inputmode="decimal" id="sim-total" placeholder="e.g. 412" oninput="calcSim()"></div><div class="sim-row"><label>Square expected ($)</label><input class="sim-input" type="number" inputmode="decimal" id="sim-square" placeholder="e.g. 162" oninput="calcSim()"></div><div class="sim-result" id="sim-result">Enter values above to check your drawer.</div></div>
   `;
@@ -286,11 +391,11 @@ function calcSim(){
   const sq=parseFloat(document.getElementById('sim-square').value)||0;
   const el=document.getElementById('sim-result');
   if(!total&&!sq){el.textContent='Enter values above to check your drawer.';return;}
-  const remaining=total-250;const diff=remaining-sq;const abs=Math.abs(diff);
-  if(total<250){el.textContent='Total in drawer is less than the $250 starting bank. Check your count.';}
-  else if(abs===0){el.textContent='Drawer balances. Cash after bank: $'+remaining.toFixed(2)+' — matches Square.';}
-  else if(abs<=2){el.textContent='Within $'+abs.toFixed(2)+' — acceptable variance. Cash after bank: $'+remaining.toFixed(2)+'.';}
-  else{el.textContent='Variance of $'+abs.toFixed(2)+' '+(diff>0?'over':'short')+'. Cash after bank: $'+remaining.toFixed(2)+'. Notify management immediately.';}
+  const r=total-250,d=r-sq,a=Math.abs(d);
+  if(total<250){el.textContent='Total is less than the $250 starting bank. Check your count.';}
+  else if(a===0){el.textContent='Drawer balances. Cash after bank: $'+r.toFixed(2)+' — matches Square.';}
+  else if(a<=2){el.textContent='Within $'+a.toFixed(2)+' — acceptable. Cash after bank: $'+r.toFixed(2)+'.';}
+  else{el.textContent='Variance of $'+a.toFixed(2)+' '+(d>0?'over':'short')+'. Cash after bank: $'+r.toFixed(2)+'. Notify management immediately.';}
 }
 
 function calcRsim(){
@@ -298,11 +403,11 @@ function calcRsim(){
   const sq=parseFloat(document.getElementById('rsim-square').value)||0;
   const el=document.getElementById('rsim-result');
   if(!total&&!sq){el.textContent='Enter values above to check your drawer.';return;}
-  const remaining=total-250;const diff=remaining-sq;const abs=Math.abs(diff);
-  if(total<250){el.textContent='Total in drawer is less than the $250 starting bank. Check your count.';}
-  else if(abs===0){el.textContent='Drawer balances. Cash after bank: $'+remaining.toFixed(2)+' — matches Square.';}
-  else if(abs<=2){el.textContent='Within $'+abs.toFixed(2)+' — acceptable. Cash after bank: $'+remaining.toFixed(2)+'.';}
-  else{el.textContent='Variance of $'+abs.toFixed(2)+' '+(diff>0?'over':'short')+'. Cash after bank: $'+remaining.toFixed(2)+'. Notify management immediately.';}
+  const r=total-250,d=r-sq,a=Math.abs(d);
+  if(total<250){el.textContent='Total is less than the $250 starting bank. Check your count.';}
+  else if(a===0){el.textContent='Drawer balances. Cash after bank: $'+r.toFixed(2)+' — matches Square.';}
+  else if(a<=2){el.textContent='Within $'+a.toFixed(2)+' — acceptable. Cash after bank: $'+r.toFixed(2)+'.';}
+  else{el.textContent='Variance of $'+a.toFixed(2)+' '+(d>0?'over':'short')+'. Cash after bank: $'+r.toFixed(2)+'. Notify management immediately.';}
 }
 
 const resources={
@@ -333,17 +438,17 @@ const resources={
   countdown:`
     <div class="masthead" style="margin-bottom:1.5rem"><div class="eyebrow">Resource</div><h1 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:400">Count-Down Reference</h1><div class="sub">Keep this handy at every closing shift</div></div>
     <div class="lesson-section"><div class="lesson-label">What you need</div><div class="lesson-text">Calculator &nbsp;·&nbsp; Cash count sheet &nbsp;·&nbsp; Deposit bag &nbsp;·&nbsp; Pen &nbsp;·&nbsp; A second staff member present for all counts</div></div>
-    <div class="lesson-section"><div class="lesson-label">Starting bank breakdown</div><div class="lesson-text">4 × $20 bills ($80) &nbsp;·&nbsp; 5 × $10 bills ($50) &nbsp;·&nbsp; 10 × $5 bills ($50) &nbsp;·&nbsp; 40 × $1 bills ($40) &nbsp;·&nbsp; 120 quarters ($30) &nbsp;·&nbsp; Total: $250</div></div>
+    <div class="lesson-section"><div class="lesson-label">Starting bank breakdown</div><div class="lesson-text">4 × $20 ($80) &nbsp;·&nbsp; 5 × $10 ($50) &nbsp;·&nbsp; 10 × $5 ($50) &nbsp;·&nbsp; 40 × $1 ($40) &nbsp;·&nbsp; 120 quarters ($30) &nbsp;·&nbsp; Total: $250</div></div>
     <div style="margin:1.5rem 0 0.5rem"><div class="lesson-label">The eight steps</div></div>
-    <div class="step-card"><div class="step-num">1</div><div><div class="step-title">Close the register in Square</div><div class="step-text">Complete all transactions. No pending sales should remain open.</div></div></div>
-    <div class="step-card"><div class="step-num">2</div><div><div class="step-title">Remove the drawer</div><div class="step-text">Move cash drawer to a secure, private counting area. Authorized staff only.</div></div></div>
-    <div class="step-card" style="border-color:var(--gold)"><div class="step-num" style="color:var(--gold)">3</div><div><div class="step-title">Separate the $250 starting bank</div><div class="step-text">Count out $250 exactly in correct denominations. Second staff member verifies. Place in cash bag — keep completely separate from deposit.</div><div class="step-warn">4 × $20 · 5 × $10 · 10 × $5 · 40 × $1 · 120 quarters</div></div></div>
-    <div class="step-card"><div class="step-num">4</div><div><div class="step-title">Count remaining cash</div><div class="step-text">Smallest to largest: quarters → $1s → $5s → $10s → $20s. Include mid-shift drop slips. Record on count sheet. Second staff member verifies.</div></div></div>
-    <div class="step-card"><div class="step-num">5</div><div><div class="step-title">Verify against Square</div><div class="step-text">Cash counted must equal Square's expected cash sales total for the shift.</div></div></div>
-    <div class="step-card" style="border-color:var(--rust)"><div class="step-num">6</div><div><div class="step-title">Document variances</div><div class="step-text">Over or short by more than $2? Notify management immediately. Note the variance on the count sheet.</div><div class="step-warn">Never hide a shortage or overage — always report.</div></div></div>
-    <div class="step-card"><div class="step-num">7</div><div><div class="step-title">Prepare deposit bag</div><div class="step-text">Place counted cash (not the starting bank) in the deposit bag. Attach the count sheet labeled with date, location, and employee initials.</div></div></div>
-    <div class="step-card"><div class="step-num">8</div><div><div class="step-title">Two people deliver the deposit</div><div class="step-text">Transport deposit bag to safe together. Place starting bank bag and key in safe separately.</div><div class="step-warn">Two people always. No exceptions.</div></div></div>
-    <div class="example-box"><div class="ex-label">Worked example</div><div class="example-step">Total in drawer at close: <span>$412</span></div><div class="example-step">Minus starting bank: <span>− $250</span></div><div class="example-step">Cash to verify: <span>$162</span></div><div class="example-step">Square expected cash sales: <span>$162</span></div><div class="example-step" style="margin-top:8px;color:var(--sage)">✓ Drawer balances. Proceed to deposit.</div></div>
+    <div class="step-card"><div class="step-num">1</div><div><div class="step-title">Close the register in Square</div><div class="step-text">Complete all transactions. No pending sales open.</div></div></div>
+    <div class="step-card"><div class="step-num">2</div><div><div class="step-title">Remove the drawer</div><div class="step-text">Secure counting area. Authorized staff only.</div></div></div>
+    <div class="step-card" style="border-color:var(--gold)"><div class="step-num" style="color:var(--gold)">3</div><div><div class="step-title">Separate the $250 starting bank</div><div class="step-text">Exact denominations. Second staff verifies. Keep completely separate from deposit.</div><div class="step-warn">4×$20 · 5×$10 · 10×$5 · 40×$1 · 120 quarters</div></div></div>
+    <div class="step-card"><div class="step-num">4</div><div><div class="step-title">Count remaining cash</div><div class="step-text">$20s → $10s → $5s → $1s → quarters. Include drop slips. Second staff verifies.</div></div></div>
+    <div class="step-card"><div class="step-num">5</div><div><div class="step-title">Verify against Square</div><div class="step-text">Your cash total must equal Square's expected cash sales for the shift.</div></div></div>
+    <div class="step-card" style="border-color:var(--rust)"><div class="step-num">6</div><div><div class="step-title">Document variances</div><div class="step-text">Over or short more than $2 — notify management immediately.</div><div class="step-warn">Never hide a shortage or overage.</div></div></div>
+    <div class="step-card"><div class="step-num">7</div><div><div class="step-title">Prepare deposit bag</div><div class="step-text">Counted cash only. Attach labeled count sheet: date, location, initials.</div></div></div>
+    <div class="step-card"><div class="step-num">8</div><div><div class="step-title">Two people deliver the deposit</div><div class="step-text">Together to the safe. Starting bank and key placed separately.</div><div class="step-warn">Two people always. No exceptions.</div></div></div>
+    <div class="example-box"><div class="ex-label">Worked example</div><div class="example-step">Total in drawer at close: <span>$412</span></div><div class="example-step">Minus starting bank: <span>− $250</span></div><div class="example-step">Cash to verify: <span>$162</span></div><div class="example-step">Square expected: <span>$162</span></div><div class="example-step" style="margin-top:8px;color:var(--sage)">✓ Drawer balances.</div></div>
     <div class="interactive-sim"><div class="sim-label">Drawer check calculator</div><div class="sim-row"><label>Total in drawer ($)</label><input class="sim-input" type="number" inputmode="decimal" id="rsim-total" placeholder="e.g. 412" oninput="calcRsim()"></div><div class="sim-row"><label>Square expected ($)</label><input class="sim-input" type="number" inputmode="decimal" id="rsim-square" placeholder="e.g. 162" oninput="calcRsim()"></div><div class="sim-result" id="rsim-result">Enter values above to check your drawer.</div></div>
   `
 };
@@ -359,7 +464,7 @@ const questions=[
   {q:"What should you do if Square and the cash drawer do not match?",options:["Adjust the drawer quietly","Guess and move on","Stop and call a supervisor immediately","Void the last transaction"],answer:2,explain:"The golden rule: if Square and the drawer don't match, stop and call a supervisor immediately."},
   {q:"What is the correct response when a guest is upset?",options:["Explain why they are wrong","Stay calm, listen, apologize, escalate if needed","Offer a free item without approval","Ignore it until they calm down"],answer:1,explain:"Stay calm → Listen → Apologize sincerely → Get a supervisor if needed. Never argue."},
   {q:"During the count-down, what do you separate out first?",options:["Large bills only","The $250 starting bank","All coins first","The deposit bag"],answer:1,explain:"Step 3 is to separate the $250 starting bank before counting the remaining cash."},
-  {q:"In what order do you count remaining denominations during count-down?",options:["Largest to smallest","Alphabetically","Smallest to largest","It does not matter"],answer:2,explain:"Always count smallest to largest: quarters → $1s → $5s → $10s → $20s."},
+  {q:"In what order do you count remaining denominations?",options:["Largest to smallest","Alphabetically","Smallest to largest","It does not matter"],answer:0,explain:"Always count largest to smallest: $20s → $10s → $5s → $1s → quarters."},
   {q:"How many people must transport the deposit bag?",options:["One","Two","Three","Any available staff"],answer:1,explain:"Two people must always transport the deposit bag to the drop location together."},
   {q:"Which of these is something staff must never do?",options:["Greet guests warmly","Consume unpaid merchandise","Report low inventory","Count change back aloud"],answer:1,explain:"Staff must never consume unpaid merchandise — nor share logins or leave drawers unattended."},
   {q:"At what threshold must a drawer variance be reported?",options:["Any variance","More than $1","More than $2","More than $5"],answer:2,explain:"Variances of more than $2 in either direction must be reported to management immediately."},
@@ -367,7 +472,7 @@ const questions=[
   {q:"What must be attached to the deposit bag before it goes to the safe?",options:["A sticky note with the amount","A labeled cash count sheet with date, location, and initials","Nothing — just the cash","The Square receipt printout"],answer:1,explain:"The deposit bag must have a clearly labeled cash count sheet showing date, location, and employee initials."}
 ];
 
-let curLesson=0,curQ=0,score=0,answered=false,wrong=[];
+let curQ=0,score=0,answered=false,wrong=[],staffName='';
 
 function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -376,12 +481,10 @@ function show(id){
 }
 
 function goLesson(i){
-  curLesson=i;
   const l=lessons[i];
   let h='';
-  if(l.isCountdown){
-    h=countdownHTML();
-  } else {
+  if(l.isCountdown){h=countdownHTML();}
+  else{
     h=`<div class="masthead" style="margin-bottom:1.5rem"><div class="eyebrow">Section ${l.num}</div><h1 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:400">${l.title}</h1></div>`;
     l.sections.forEach(s=>{h+=`<div class="lesson-section"><div class="lesson-label">${s.label}</div><div class="lesson-text">${s.text}</div></div>`;});
   }
@@ -394,12 +497,20 @@ function goResource(key){
   show('resource');
 }
 
-function startQuiz(){curQ=0;score=0;answered=false;wrong=[];renderQ();show('quiz');}
+function startQuiz(){show('nameentry');setTimeout(()=>{const el=document.getElementById('staff-name-input');if(el){el.value='';el.focus();}},250);}
+
+function beginQuiz(){
+  const el=document.getElementById('staff-name-input');
+  staffName=(el&&el.value.trim())||'';
+  if(!staffName){el.style.borderColor='var(--rust)';el.placeholder='Please enter your name';return;}
+  el.style.borderColor='#B8A898';
+  curQ=0;score=0;answered=false;wrong=[];
+  renderQ();show('quiz');
+}
 
 function renderQ(){
   const q=questions[curQ];
-  const pct=Math.round(curQ/questions.length*100);
-  document.getElementById('progress').style.width=pct+'%';
+  document.getElementById('progress').style.width=Math.round(curQ/questions.length*100)+'%';
   let h=`<div class="q-label">Question ${curQ+1} of ${questions.length}</div><div class="q-text">${q.q}</div>`;
   q.options.forEach((o,i)=>{h+=`<button class="opt" id="opt${i}" onclick="checkAns(${i})">${String.fromCharCode(65+i)}.&nbsp;&nbsp;${o}</button>`;});
   h+=`<div class="feedback-box" id="fb"></div><div class="nav-row" id="nav" style="display:none"><button class="btn-ghost" onclick="show('home')">← Home</button><button class="btn-primary" style="flex:1;margin-left:8px" onclick="nextQ()">${curQ<questions.length-1?'Next →':'See results →'}</button></div>`;
@@ -409,8 +520,7 @@ function renderQ(){
 
 function checkAns(i){
   if(answered)return;answered=true;
-  const q=questions[curQ];
-  const fb=document.getElementById('fb');
+  const q=questions[curQ],fb=document.getElementById('fb');
   document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
   if(i===q.answer){score++;document.getElementById('opt'+i).classList.add('correct');fb.className='feedback-box correct show';fb.innerHTML='Correct. '+q.explain;}
   else{document.getElementById('opt'+i).classList.add('wrong');document.getElementById('opt'+q.answer).classList.add('reveal');fb.className='feedback-box wrong show';fb.innerHTML='Not quite. '+q.explain;wrong.push(curQ);}
@@ -421,17 +531,23 @@ function nextQ(){curQ++;if(curQ>=questions.length){showResults();return;}renderQ
 
 function showResults(){
   document.getElementById('progress').style.width='100%';
-  const pct=Math.round(score/questions.length*100);
-  const pass=pct>=80;
-  let h=`<div class="score-frame"><div class="eyebrow">Your result</div><div class="score-pct">${pct}%</div><div class="score-counts">${score} of ${questions.length} correct</div><div class="score-sub">${pass?'Cleared for the floor':'Please review and retake'}</div></div><p style="font-size:13px;color:var(--rust);line-height:1.75;margin-bottom:1.5rem;text-align:center;font-family:'Playfair Display',serif;font-style:italic">${pass?'Well done. You may proceed to your first supervised shift.':'Review the flagged sections below, then retake the quiz before your first shift.'}</p>`;
-  if(wrong.length>0){
-    h+=`<div class="divider">review notes</div><div style="margin-bottom:1.5rem">`;
-    wrong.forEach(i=>{const q=questions[i];h+=`<div class="review-item"><div class="review-q">${q.q}</div><div class="review-a">${q.explain}</div></div>`;});
-    h+=`</div>`;
+  const total=questions.length,pct=Math.round(score/total*100),pass=pct>=80;
+
+  if(pass){
+    document.getElementById('pass-name').textContent=staffName;
+    document.getElementById('pass-score').textContent=score+' of '+total+' correct — '+pct+'%';
+    const note=document.getElementById('pass-sending');
+    note.textContent='Notifying your manager…';
+    sendPassEmail(staffName,score,total,pct);
+    setTimeout(()=>{note.textContent='Your manager has been notified.';},1200);
+    show('pass');
+  } else {
+    document.getElementById('fail-score').textContent=score+' of '+total+' correct — '+pct+'%';
+    let rev='';
+    wrong.forEach(i=>{const q=questions[i];rev+=`<div class="review-item"><div class="review-q">${q.q}</div><div class="review-a">${q.explain}</div></div>`;});
+    document.getElementById('fail-review').innerHTML=rev||'<p style="font-size:13px;color:var(--muted);font-style:italic">Nice try — review the modules and come back.</p>';
+    show('fail');
   }
-  h+=`<div class="nav-row"><button class="btn-ghost" onclick="show('home')">← Home</button><button class="btn-primary" style="flex:1;margin-left:8px" onclick="startQuiz()">Retake quiz →</button></div>`;
-  document.getElementById('results-content').innerHTML=h;
-  show('results');
 }
 </script>
 </body>
